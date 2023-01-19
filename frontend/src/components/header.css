@@ -31,11 +31,8 @@
 }
 
 .header a.active {
-  background-color: #59C1BD;
-  /* color: #FB2576; */
-  COLOR: #fff;
+  background-color: #7DCE13;
   border-radius: 30px;
-  box-shadow: 0 0 20px #59C1BD;
 }
 .header-right {
   display: flex;
