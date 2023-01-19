@@ -53,6 +53,19 @@ app.post('/users', (req, res) => {
     res.send("New User Created");
 });
 
+// ! Delete user
+app.delete('/users/:id', (req, res) => {
+    const id = req.params.id;
+    const user = users.find((u) => u.id === parseInt(id));
+    users = users.filter((u) => u.id !== parseInt(id));
+    if(!user){
+        res.status(404).send("User not found");
+    }
+   res.send(users);
+});
+
+
+
 app.listen(port, () => {
-  console.log(`Server running in  ${port}`);
+  console.log(`Server running in2  ${port}`);
 }); 
