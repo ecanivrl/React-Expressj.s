@@ -29,11 +29,11 @@ body {
   font-size: 14px;
   padding: 10px 18px;
   text-decoration: none;
-  text-shadow: 1px 0px 0px #2f6627;
+  text-shadow: 1px 0px 0px #eb3e3e;
   letter-spacing: 0.3px;
 }
 .btn:hover {
-  background-color: #bfb02a;
+  background-color: #FB2576;
 }
 .btn:active {
   position: relative;
@@ -51,6 +51,5 @@ body {
 }
 
 .btn-success {
-  background-color: rgb(15, 194, 15);
-  border-color: rgb(15, 194, 15);
+  background-color: #7DCE13;
 }
