@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
+import { toast } from "react-toastify";
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
   const [data, setData] = useState([]);
@@ -15,6 +17,18 @@ export const Home = () => {
       setData(res.data);
     }
   };
+
+  const onDeleteUser = async (id) => {
+   if(window.confirm("Are you sure ?")){
+    const res = await axios.delete(`http://localhost:5000/users/${id}`);
+    console.log(res)
+    if (res.status === 200) {
+      toast.success("User Deleted Successfully");
+      getUsers();
+    }
+   }
+  };
+
 
   return (
     <div className="table-wrapper">
@@ -43,8 +57,10 @@ export const Home = () => {
                 <td>
                   <div className="buttons">
                     <button className="btn btn-primary">View</button>
-                    <button className="btn btn-success">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                  <Link to={`/update/${user.id}`}  className="btn btn-success">
+                 Edit
+                  </Link>
+                    <button className="btn btn-danger" onClick={() => onDeleteUser(user.id)}>Delete</button>
                   </div>
                 </td>
               </tr>

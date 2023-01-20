@@ -1,4 +1,5 @@
-import React,{useState} from 'react';
+import React,{useState , useEffect} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './addedit.css';
 import axios from 'axios';  
 import { toast } from "react-toastify";
@@ -19,6 +20,20 @@ export const AddEdit = () => {
     const {name, email, country, city, contact} = data;
 
 
+    const {id} = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if(id){
+        getSingleUser(id);
+      }
+    },[id])
+
+    const getSingleUser = async (id) => {
+      const res = await axios.put(`http://localhost:5000/users/${id}`);
+     setData(res.data)
+  }
+
     const createUser = async (data) => {
         const res = await axios.post("http://localhost:5000/users/", data);
         if(res.status === 200){
@@ -26,13 +41,28 @@ export const AddEdit = () => {
         }
     }
 
+    const updateUser = async (data, id) => {
+      const res = await axios.put(`http://localhost:5000/users/${id}`, data);
+      if(res.status === 200){
+        toast.success("User Created Successfully")
+      }
+  }
+
 const handleSubmit = (e) => {
     e.preventDefault();
     if(!name || !email || !country || !city || !contact){
         toast.error("Please fill all the fields")
         return;
     };
+   if(!id){
     createUser(data);
+    setTimeout(() => {
+      navigate('/');
+    window.location.reload();
+    }, 1500);
+   }else{
+    updateUser(data, id);
+   }
 }
 
 const handleInputChange = (e) => {
