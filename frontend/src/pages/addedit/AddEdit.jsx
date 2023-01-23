@@ -1,75 +1,70 @@
-import React,{useState , useEffect} from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './addedit.css';
-import axios from 'axios';  
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
-
+import "./addedit.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 const initialState = {
-    name: '',
-    email: '',
-    country: '',
-    city: '',
-    contact: '',
+  name: "",
+  email: "",
+  country: "",
+  contact: "",
 };
 
-
 export const AddEdit = () => {
+  const [data, setData] = useState(initialState);
+  const { name, email, country, contact } = data;
 
-    const [data, setData] = useState(initialState)
-    const {name, email, country, city, contact} = data;
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-
-    const {id} = useParams();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-      if(id){
-        getSingleUser(id);
-      }
-    },[id])
-
-    const getSingleUser = async (id) => {
-      const res = await axios.put(`http://localhost:5000/users/${id}`);
-     setData(res.data)
-  }
-
-    const createUser = async (data) => {
-        const res = await axios.post("http://localhost:5000/users/", data);
-        if(res.status === 200){
-          toast.success("User Created Successfully")
-        }
+  useEffect(() => {
+    if (id) {
+      getSingleUser(id);
     }
+  }, [id]);
 
-    const updateUser = async (data, id) => {
-      const res = await axios.put(`http://localhost:5000/users/${id}`, data);
-      if(res.status === 200){
-        toast.success("User Created Successfully")
-      }
-  }
+  const getSingleUser = async (id) => {
+    const res = await axios.get(`http://localhost:5000/users/${id}`);
+    if (res.status === 200) {
+      setData({ ...res.data });
+    }
+  };
 
-const handleSubmit = (e) => {
-    e.preventDefault();
-    if(!name || !email || !country || !city || !contact){
-        toast.error("Please fill all the fields")
-        return;
-    };
-   if(!id){
-    createUser(data);
-    setTimeout(() => {
-      navigate('/');
+  const createUser = async (data) => {
+    const res = await axios.post("http://localhost:5000/users/", data);
+    if (res.status === 200) {
+      toast.success(res.data);
+    }
+  };
+
+  const updateUser = async (data, id) => {
+    const res = await axios.put(`http://localhost:5000/users/${id}`, data);
+    if (res.status === 200) {
+      toast.success(res.data);
+    }
     window.location.reload();
-    }, 1500);
-   }else{
-    updateUser(data, id);
-   }
-}
+  };
 
-const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    setData({...data, [name]: value})
-    console.log(data)
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name || !email || !country || !contact) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+    if (!id) {
+      createUser(data);
+    } else {
+      updateUser(data, id);
+    }
+    navigate("/");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -107,17 +102,6 @@ const handleInputChange = (e) => {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="city">City</label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            placeholder="Enter a city."
-            onChange={handleInputChange}
-            value={city}
-          />
-        </div>
-        <div className="input-wrapper">
           <label htmlFor="contact">Contact</label>
           <input
             type="text"
@@ -128,7 +112,11 @@ const handleInputChange = (e) => {
             value={contact}
           />
         </div>
-        <input type="submit" className='btn btn-success' value="Add"/>
+        <input
+          type="submit"
+          className="btn btn-success"
+          value={id ? "Update" : "Add"}
+        />
       </form>
     </div>
   );

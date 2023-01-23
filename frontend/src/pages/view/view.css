@@ -1,0 +1,21 @@
+.view {
+    background-color: orange;
+    padding: 100px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-top: 150px;
+  }
+  
+  .view-item b {
+    font-size: 20px;
+  }
+  .view-item span {
+    font-size: 18px;
+  }
+  
+  .view button {
+    width: 100%;
+    margin-top: 10px;
+  }
